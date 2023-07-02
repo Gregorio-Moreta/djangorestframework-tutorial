@@ -14,6 +14,7 @@ from snippets.serializers import SnippetSerializer
 # If the request method is POST, it parses the request data using the JSONParser() class and validates it using the SnippetSerializer class. 
 # If the data is valid, it saves it to the database using the serializer.save() method and returns a JSON response containing the serialized data and a status code of 201. 
 # If the data is not valid, it returns a JSON response containing the validation errors and a status code of 400.
+# Note that because we want to be able to POST to this view from clients that won't have a CSRF token we need to mark the view as csrf_exempt. This isn't something that you'd normally want to do, and REST framework views actually use more sensible behavior than this, but it'll do for our purposes right now.
 
 @csrf_exempt
 def snippet_list(request):
