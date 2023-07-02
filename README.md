@@ -1,7 +1,7 @@
 # Djangorestframework-tutorial
 ## Build the official tutorial app
 
-There are 6 parts in total listed at the bottom of this repo in the [References](#References), going from default django features to replacing them with djangorestframework specific tools.
+There are 6 parts in total listed at the bottom of this repo in the [References](#references), going from default django features to replacing them with djangorestframework specific tools.
 
 I won't write everything over from the tutorials, but I have added significant comments and intend to write each of the 6 tutorial parts with comments.
 
@@ -100,7 +100,7 @@ If I missed something I'll add it later. Please make an issue if you want to bri
 To be continued...
 
 
-### References {#References}
+### References {#references}
 - https://www.django-rest-framework.org/tutorial/1-serialization/
 - https://www.django-rest-framework.org/tutorial/2-requests-and-responses/
 - https://www.django-rest-framework.org/tutorial/3-class-based-views/
