@@ -100,7 +100,7 @@ If I missed something I'll add it later. Please make an issue if you want to bri
 To be continued...
 
 
-### References {#references}
+### References
 - https://www.django-rest-framework.org/tutorial/1-serialization/
 - https://www.django-rest-framework.org/tutorial/2-requests-and-responses/
 - https://www.django-rest-framework.org/tutorial/3-class-based-views/
