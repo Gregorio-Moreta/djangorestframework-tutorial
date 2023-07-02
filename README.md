@@ -1,11 +1,11 @@
-#Djangorestframework-tutorial
+# Djangorestframework-tutorial
 ## Build the official tutorial app
 
 There are 6 parts in total listed at the bottom of this repo in the [References](#References), going from default django features to replacing them with djangorestframework specific tools.
 
 I won't write everything over from the tutorials, but I have added significant comments and intend to write each of the 6 tutorial parts with comments.
 
-###Setting up environment
+### Setting up environment
 You can use any environment you prefer so long as you know how to use them properly. 
 For some of you, pip may cause problems, you can use homebrew to install these if you need to as well.
 Options include:
@@ -13,15 +13,15 @@ Options include:
 - pipenv
 - mkvirtualenv ( we used this one in class )
 
-####venv
+#### venv
 ```
 python3 -m venv env
 source env/bin/activate
 ```
-####pipenv
-https://pipenv-fork.readthedocs.io/en/latest/basics.html
-https://formulae.brew.sh/formula/pipenv
-https://medium.com/geekculture/setting-up-python-environment-in-macos-using-pyenv-and-pipenv-116293da8e72
+#### pipenv
+- https://pipenv-fork.readthedocs.io/en/latest/basics.html
+- https://formulae.brew.sh/formula/pipenv
+- https://medium.com/geekculture/setting-up-python-environment-in-macos-using-pyenv-and-pipenv-116293da8e72
 ```
 Note, if you install this you will generate a Pipfile
 This works differently from the others
@@ -30,8 +30,8 @@ All you need to do is pipenv install < package name >
 This will automatically install it to your project environment
 ```
 
-####mkvirtualenv
-https://virtualenvwrapper.readthedocs.io/en/latest/install.html
+#### mkvirtualenv
+- https://virtualenvwrapper.readthedocs.io/en/latest/install.html
 ```
 Install
 pip install virtualenvwrapper
@@ -73,16 +73,16 @@ All of these are viable options, but they each operate slightly differently.
 There are other env options still, however you shouldn't need anymore than these. 
 If one gives you too many issues you can simply try another.
 
-###Installation
-####Part1
+### Installation
+#### Part1
 Follow along here
-https://www.django-rest-framework.org/tutorial/1-serialization/
+- https://www.django-rest-framework.org/tutorial/1-serialization/
 
 I even left the code that we eventually replaced. 
 I added comments to it so as to add context about why it was replaced, from pure django to djangorestframework.
 
-###Summary
-####Part1
+### Summary
+#### Part1
 
 At the end of part 1, you should be able to perform full CRUD functionality. 
 
@@ -96,14 +96,14 @@ I ran makemigrations and migrate so my models should be synched with the databas
 
 If I missed something I'll add it later. Please make an issue if you want to bring something to my attention. Thank you, kindly!
 
-####Part2
+#### Part2
 To be continued...
 
 
-###References {#References}
-https://www.django-rest-framework.org/tutorial/1-serialization/
-https://www.django-rest-framework.org/tutorial/2-requests-and-responses/
-https://www.django-rest-framework.org/tutorial/3-class-based-views/
-https://www.django-rest-framework.org/tutorial/4-authentication-and-permissions/
-https://www.django-rest-framework.org/tutorial/5-relationships-and-hyperlinked-apis/
-https://www.django-rest-framework.org/tutorial/6-viewsets-and-routers/
+### References {#References}
+- https://www.django-rest-framework.org/tutorial/1-serialization/
+- https://www.django-rest-framework.org/tutorial/2-requests-and-responses/
+- https://www.django-rest-framework.org/tutorial/3-class-based-views/
+- https://www.django-rest-framework.org/tutorial/4-authentication-and-permissions/
+- https://www.django-rest-framework.org/tutorial/5-relationships-and-hyperlinked-apis/
+- https://www.django-rest-framework.org/tutorial/6-viewsets-and-routers/
