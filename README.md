@@ -76,14 +76,14 @@ There are other env options still, however you shouldn't need anymore than these
 If one gives you too many issues you can simply try another.
 
 ### Installation
-#### Part1
+#### Part_1
 Follow along here
 - https://www.django-rest-framework.org/tutorial/1-serialization/
 
 I even left the code that we eventually replaced. 
 I added comments to it so as to add context about why it was replaced, from pure django to djangorestframework.
 
-#### Part2
+#### Part_2
 - https://www.django-rest-framework.org/tutorial/2-requests-and-responses/
 Not much has changed except a couple additions
 ```
@@ -95,8 +95,12 @@ from snippets.serializers import SnippetSerializer
 ```
 Some of these are new and explained here, api_view, Response, status
 
+#### Part_3
+- https://www.django-rest-framework.org/tutorial/3-class-based-views/
+
+
 ### Summary
-#### Part1
+#### Part_1
 
 At the end of part 1, you should be able to perform full CRUD functionality. 
 
@@ -110,7 +114,7 @@ I ran makemigrations and migrate so my models should be synched with the databas
 
 If I missed something I'll add it later. Please make an issue if you want to bring something to my attention. Thank you, kindly!
 
-#### Part2
+#### Part_2
 Covered these topics in the snippets/views.py and snippets/urls.py
 - Responses
 - Requests
@@ -123,6 +127,9 @@ Note that I also included comments explaining much of this in the files on this 
 
 ![alt text](./Images/Part-2/Screen%20Shot%202023-07-02%20at%208.21.33%20PM.png)
 ![alt text](./Images/Part-2/Screen%20Shot%202023-07-02%20at%208.23.01%20PM.png)
+
+#### Part_3
+I made a new views file for this part, the code is more concise and uses the APIView class as explained in the new views file comments. Essentially it handles a lot of scenarios for you out of the box so you don't need to manually configure everything in your views like before. It will allow us to build features more quickly.
 
 ### References
 - https://www.django-rest-framework.org/tutorial/1-serialization/
