@@ -129,7 +129,7 @@ Note that I also included comments explaining much of this in the files on this 
 ![alt text](./Images/Part-2/Screen%20Shot%202023-07-02%20at%208.23.01%20PM.png)
 
 #### Part_3
-I made new views files for this part so there is one for rewriting our API using class-based views, using mixins, and using generic class-based views. 
+I made new views files for this part_3 so there is one for rewriting our API using class-based views, using mixins, and using generic class-based views. 
 
 The code is more concise and uses the APIView class as explained in the new views files comments. Essentially it handles a lot of scenarios for you out of the box so you don't need to manually configure everything in your views like before. It will allow us to build features more quickly.
 
