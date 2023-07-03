@@ -5,6 +5,8 @@ There are 6 parts in total listed at the bottom of this repo in the [References]
 
 I won't write everything over from the tutorials, but I have added significant comments and intend to write each of the 6 tutorial parts with comments.
 
+Also, I haven't installed the http client in python, I'm just using postman. The shell commands given are fully functional as well, so use those along the way.
+
 ### Setting up environment
 You can use any environment you prefer so long as you know how to use them properly. 
 For some of you, pip may cause problems, you can use homebrew to install these if you need to as well.
@@ -81,6 +83,18 @@ Follow along here
 I even left the code that we eventually replaced. 
 I added comments to it so as to add context about why it was replaced, from pure django to djangorestframework.
 
+#### Part2
+- https://www.django-rest-framework.org/tutorial/2-requests-and-responses/
+Not much has changed except a couple additions
+```
+from rest_framework import status
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from snippets.models import Snippet
+from snippets.serializers import SnippetSerializer
+```
+Some of these are new and explained here, api_view, Response, status
+
 ### Summary
 #### Part1
 
@@ -97,8 +111,18 @@ I ran makemigrations and migrate so my models should be synched with the databas
 If I missed something I'll add it later. Please make an issue if you want to bring something to my attention. Thank you, kindly!
 
 #### Part2
-To be continued...
+Covered these topics in the snippets/views.py and snippets/urls.py
+- Responses
+- Requests
+- Status Codes
+- Wrapping API view
+- Adding optional format suffixes to URLs 
 
+Checkout the docs for further details about how these features work and refer to the screenshots below.
+Note that I also included comments explaining much of this in the files on this branch and commit so check those out.
+
+![alt text](./Images/Part-2/Screen%20Shot%202023-07-02%20at%208.21.33%20PM.png)
+![alt text](./Images/Part-2/Screen%20Shot%202023-07-02%20at%208.23.01%20PM.png)
 
 ### References
 - https://www.django-rest-framework.org/tutorial/1-serialization/
