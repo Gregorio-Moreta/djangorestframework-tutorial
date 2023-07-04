@@ -76,14 +76,14 @@ There are other env options still, however you shouldn't need anymore than these
 If one gives you too many issues you can simply try another.
 
 ### Installation
-#### Part_1
+#### Part_1 Serialization
 Follow along here
 - https://www.django-rest-framework.org/tutorial/1-serialization/
 
 I even left the code that we eventually replaced. 
 I added comments to it so as to add context about why it was replaced, from pure django to djangorestframework.
 
-#### Part_2
+#### Part_2 Requests and Responses
 - https://www.django-rest-framework.org/tutorial/2-requests-and-responses/
 Not much has changed except a couple additions
 ```
@@ -95,7 +95,7 @@ from snippets.serializers import SnippetSerializer
 ```
 Some of these are new and explained here, api_view, Response, status
 
-#### Part_3
+#### Part_3 Class Based Views
 - https://www.django-rest-framework.org/tutorial/3-class-based-views/
 If you want to test the different types of ways you can build your views, just rename whatever file you want to be as views 
 
@@ -127,8 +127,18 @@ from rest_framework import generics
 
 This way you should be able to learn about the different approaches available. For now I will leave the generic class-based views as my views.py, unless the tutorial changes it down the line.
 
+#### Part_4 Authentication and Permissions
+- https://www.django-rest-framework.org/tutorial/4-authentication-and-permissions/
+```
+from pygments.lexers import get_lexer_by_name
+from pygments.formatters.html import HtmlFormatter
+from pygments import highlight
+```
+- Check out the Part_4 summary section
+
+
 ### Summary
-#### Part_1
+#### Part_1 Serialization
 
 At the end of part 1, you should be able to perform full CRUD functionality. 
 
@@ -142,7 +152,7 @@ I ran makemigrations and migrate so my models should be synched with the databas
 
 If I missed something I'll add it later. Please make an issue if you want to bring something to my attention. Thank you, kindly!
 
-#### Part_2
+#### Part_2 Requests and Responses
 Covered these topics in the snippets/views.py and snippets/urls.py
 - Responses
 - Requests
@@ -156,13 +166,125 @@ Note that I also included comments explaining much of this in the files on this 
 ![alt text](./Images/Part-2/Screen%20Shot%202023-07-02%20at%208.21.33%20PM.png)
 ![alt text](./Images/Part-2/Screen%20Shot%202023-07-02%20at%208.23.01%20PM.png)
 
-#### Part_3
+#### Part_3 Class Based Views
 I made new views files for this part_3 so there is one for rewriting our API using 
 - class-based views
 - mixins
 - generic class-based views
 
 The code is more concise and uses the APIView class as explained in the new views files comments. Essentially it handles a lot of scenarios for you out of the box so you don't need to manually configure everything in your views like before. It will allow us to build features more quickly.
+
+#### Part_4 Authentication and Permissions
+- Adding information to our model
+```
+Add the following two fields to the Snippet model in snippets/models.py.
+One of those fields will be used to represent the user who created the code snippet. 
+The other field will be used to store the highlighted HTML representation of the code.
+
+
+owner = models.ForeignKey('auth.User', related_name='snippets', on_delete=models.CASCADE)
+highlighted = models.TextField()
+
+Updated modelclass Snippet(models.Model):
+    created = models.DateTimeField(auto_now_add=True)
+    title = models.CharField(max_length=100, blank=True, default='')
+    code = models.TextField()
+    linenos = models.BooleanField(default=False)
+    language = models.CharField(choices=LANGUAGE_CHOICES, default='python', max_length=100)
+    style = models.CharField(choices=STYLE_CHOICES, default='friendly', max_length=100)
+    owner = models.ForeignKey('auth.User', related_name='snippets', on_delete=models.CASCADE)
+    highlighted = models.TextField()
+    class Meta:
+        ordering = ['created']
+
+```
+
+- Adding endpoints for our User models 
+```
+serializers.py
+Now that we've got some users to work with, we'd better add representations of those users to our API. 
+Creating a new serializer is easy. In serializers.py add:
+
+from django.contrib.auth.models import User
+
+class UserSerializer(serializers.ModelSerializer):
+    snippets = serializers.PrimaryKeyRelatedField(many=True, queryset=Snippet.objects.all())
+
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'snippets']
+```
+- Association Snippets with Users
+```
+Right now, if we created a code snippet, there'd be no way of associating the user that created the snippet, with the snippet instance. The user isn't sent as part of the serialized representation, but is instead a property of the incoming request.
+
+The way we deal with that is by overriding a .perform_create() method on our snippet views, that allows us to modify how the instance save is managed, and handle any information that is implicit in the incoming request or requested URL.
+
+On the SnippetList view class, add the following method:
+
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
+
+The create() method of our serializer will now be passed an additional 'owner' field, along with the validated data from the request.
+```
+- Updating our serializer
+```
+Now that snippets are associated with the user that created them, let's update our SnippetSerializer to reflect that. Add the following field to the serializer definition in serializers.py:
+
+owner = serializers.ReadOnlyField(source='owner.username')
+    class Meta:
+        model = Snippet
+        # Note: Make sure you also add 'owner', to the list of fields in the inner Meta class.  
+        fields = ['owner', 'id', 'title', 'code', 'linenos', 'language', 'style'] 
+
+
+```
+- Adding required permissions to views
+```
+Now that code snippets are associated with users, we want to make sure that only authenticated users are able to create, update and delete code snippets.
+
+REST framework includes a number of permission classes that we can use to restrict who can access a given view. In this case the one we're looking for is IsAuthenticatedOrReadOnly, which will ensure that authenticated requests get read-write access, and unauthenticated requests get read-only access.
+
+First add the following import in the views module
+
+    from rest_framework import 
+    
+Then, add the following property to both the SnippetList and SnippetDetail view classes.
+
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+```
+- Adding login to the Browsable API
+```
+tutorial/urls.py
+If you open a browser and navigate to the browsable API at the moment, you'll find that you're no longer able to create new code snippets. 
+In order to do so we'd need to be able to login as a user.
+
+We can add a login view for use with the browsable API, by editing the URLconf in our project-level urls.py file.
+
+Add the following import at the top of the file:
+
+from django.urls import path, include
+And, at the end of the file, add a pattern to include the login and logout views for the browsable API.
+
+    urlpatterns += [
+        path('api-auth/', include('rest_framework.urls')),
+    ]
+The 'api-auth/' part of pattern can actually be whatever URL you want to use.
+
+Now if you open up the browser again and refresh the page you'll see a 'Login' link in the top right of the page. 
+If you log in as one of the users you created earlier, you'll be able to create code snippets again.
+
+Once you've created a few code snippets, navigate to the '/users/' endpoint, and notice that the representation includes a list of the snippet ids that are associated with each user, in each user's 'snippets' field.
+
+I added a redirect in the tutorial/urls.py file because by default django doesn't redirect you to your route to the model. 
+It would direct you to /accounts/profile, so I made the redirect to 'snippets'. 
+After a user logs in from the 'api-auth' page, they are sent to the 'snippets' page and now have access to the protected routes/ views we added.
+```
+- Object level permissions
+
+- Authenticating with the API
+- Summary
+
 
 ### References
 - https://www.django-rest-framework.org/tutorial/1-serialization/
