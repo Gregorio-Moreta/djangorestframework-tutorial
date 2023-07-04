@@ -97,7 +97,35 @@ Some of these are new and explained here, api_view, Response, status
 
 #### Part_3
 - https://www.django-rest-framework.org/tutorial/3-class-based-views/
+If you want to test the different types of ways you can build your views, just rename whatever file you want to be as views 
 
+example 
+```
+views-Part-3-using-class-based-views.py
+or
+views-Part-3-using-mixins.py
+
+remamed to 
+
+views.py
+
+You can rename the other file you're not using so django doesn't get confused
+
+Remember to restart your database when you do this so the changes are run
+```
+
+```
+APIView
+from rest_framework.views import APIView
+
+or
+
+gnerics view
+from rest_framework import generics  
+
+```
+
+This way you should be able to learn about the different approaches available. For now I will leave the generic class-based views as my views.py, unless the tutorial changes it down the line.
 
 ### Summary
 #### Part_1
@@ -129,7 +157,10 @@ Note that I also included comments explaining much of this in the files on this 
 ![alt text](./Images/Part-2/Screen%20Shot%202023-07-02%20at%208.23.01%20PM.png)
 
 #### Part_3
-I made new views files for this part_3 so there is one for rewriting our API using class-based views, using mixins, and using generic class-based views. 
+I made new views files for this part_3 so there is one for rewriting our API using 
+- class-based views
+- mixins
+- generic class-based views
 
 The code is more concise and uses the APIView class as explained in the new views files comments. Essentially it handles a lot of scenarios for you out of the box so you don't need to manually configure everything in your views like before. It will allow us to build features more quickly.
 
