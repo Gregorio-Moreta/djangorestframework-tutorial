@@ -279,12 +279,86 @@ Once you've created a few code snippets, navigate to the '/users/' endpoint, and
 I added a redirect in the tutorial/urls.py file because by default django doesn't redirect you to your route to the model. 
 It would direct you to /accounts/profile, so I made the redirect to 'snippets'. 
 After a user logs in from the 'api-auth' page, they are sent to the 'snippets' page and now have access to the protected routes/ views we added.
+
+Check the Application tab, the cookies section and look for the token, if you have a token odds are you are authenticated for other routes
 ```
 - Object level permissions
+create a new file
+snippets/permissions.py
+```
+Really we'd like all code snippets to be visible to anyone, but also make sure that only the user that created a code snippet is able to update or delete it.
 
+To do that we're going to need to create a custom permission.
+
+In the snippets app, create a new file, permissions.py
+
+from rest_framework import permissions
+
+
+class IsOwnerOrReadOnly(permissions.BasePermission):
+    """
+    Custom permission to only allow owners of an object to edit it.
+    """
+
+    def has_object_permission(self, request, view, obj):
+        # Read permissions are allowed to any request,
+        # so we'll always allow GET, HEAD or OPTIONS requests.
+        if request.method in permissions.SAFE_METHODS:
+            return True
+
+        # Write permissions are only allowed to the owner of the snippet.
+        return obj.owner == request.user
+Now we can add that custom permission to our snippet instance endpoint, by editing the permission_classes property on the SnippetDetail view class:
+
+permission_classes = [permissions.IsAuthenticatedOrReadOnly,
+                      IsOwnerOrReadOnly]
+Make sure to also import the IsOwnerOrReadOnly class.
+
+from snippets.permissions import IsOwnerOrReadOnly
+Now, if you open a browser again, you find that the 'DELETE' and 'PUT' actions only appear on a snippet instance endpoint if you're logged in as the same user that created the code snippet.
+
+```
+![alt text](./Images/Part-4/Screen%20Shot%202023-07-04%20at%205.12.31%20AM.png)
+
+Notice that I am signed in as user1 and now have access to the PUT and DELETE buttons/ options which is authorized through the permissions.py file.
+
+![alt text](./Images/Part-4/Screen%20Shot%202023-07-04%20at%205.15.06%20AM.png)
+
+This is the view when you are signed in as user1 but view another user's Snippets. The option to DELETE or PUT is now unavailable because the Snippet belongs to anoher user.
 - Authenticating with the API
+```
+Because we now have a set of permissions on the API, we need to authenticate our requests to it if we want to edit any snippets. We haven't set up any authentication classes, so the defaults are currently applied, which are SessionAuthentication and BasicAuthentication.
+
+When we interact with the API through the web browser, we can login, and the browser session will then provide the required authentication for the requests.
+
+If we're interacting with the API programmatically we need to explicitly provide the authentication credentials on each request.
+
+If we try to create a snippet without authenticating, we'll get an error:
+
+http POST http://127.0.0.1:8000/snippets/ code="print(123)"
+
+{
+    "detail": "Authentication credentials were not provided."
+}
+We can make a successful request by including the username and password of one of the users we created earlier.
+
+http -a admin:password123 POST http://127.0.0.1:8000/snippets/ code="print(789)"
+
+{
+    "id": 1,
+    "owner": "admin",
+    "title": "foo",
+    "code": "print(789)",
+    "linenos": false,
+    "language": "python",
+    "style": "friendly"
+}
+```
 - Summary
 
+We've now got a fairly fine-grained set of permissions on our Web API, and end points for users of the system and for the code snippets that they have created.
+
+In part 5 of the tutorial we'll look at how we can tie everything together by creating an HTML endpoint for our highlighted snippets, and improve the cohesion of our API by using hyperlinking for the relationships within the system.
 
 ### References
 - https://www.django-rest-framework.org/tutorial/1-serialization/
