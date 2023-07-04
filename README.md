@@ -182,6 +182,12 @@ from rest_framework.reverse import reverse
 from rest_framework import renderers
 ```
 
+#### Part_6 Viewsets and Routers
+- https://www.django-rest-framework.org/tutorial/6-viewsets-and-routers/
+
+
+
+
 ### Summary
 #### Part_1 Serialization
 
@@ -557,6 +563,28 @@ You should be able to sign in and view the API like this.
 ![alt text](./Images/Part-5/Screen%20Shot%202023-07-04%20at%206.30.55%20PM.png)
 ![alt text](./Images/Part-5/Screen%20Shot%202023-07-04%20at%206.31.06%20PM.png)
 ![alt text](./Images/Part-5/Screen%20Shot%202023-07-04%20at%206.31.14%20PM.png)
+
+
+
+#### Part_6 Viewsets and Routers
+REST framework includes an abstraction for dealing with ViewSets, that allows the developer to concentrate on modeling the state and interactions of the API, and leave the URL construction to be handled automatically, based on common conventions.
+
+ViewSet classes are almost the same thing as View classes, except that they provide operations such as retrieve, or update, and not method handlers such as get or put.
+
+A ViewSet class is only bound to a set of method handlers at the last moment, when it is instantiated into a set of views, typically by using a Router class which handles the complexities of defining the URL conf for you.
+
+- Refactoring to use ViewSets
+
+
+- Binding ViewSets to URLS explicitly
+
+
+- Trade-offs between views vs viewsets
+
+
+
+
+
 ### References
 - https://www.django-rest-framework.org/tutorial/1-serialization/
 - https://www.django-rest-framework.org/tutorial/2-requests-and-responses/
