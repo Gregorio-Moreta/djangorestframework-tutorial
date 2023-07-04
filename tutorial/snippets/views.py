@@ -5,6 +5,8 @@ from snippets.serializers import SnippetSerializer
 from rest_framework import generics  
 # This code imports the permissions module from the Django REST Framework.
 from rest_framework import permissions
+from snippets.permissions import IsOwnerOrReadOnly
+
 
 
 class UserList(generics.ListAPIView):
@@ -36,4 +38,4 @@ class SnippetDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Snippet.objects.all()  
     serializer_class = SnippetSerializer  
     # permission_classes are used to specify the permissions that will be enforced on the view.
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
