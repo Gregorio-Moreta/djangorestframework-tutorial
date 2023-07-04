@@ -130,12 +130,47 @@ This way you should be able to learn about the different approaches available. F
 #### Part_4 Authentication and Permissions
 - https://www.django-rest-framework.org/tutorial/4-authentication-and-permissions/
 ```
+snippets/models.py
 from pygments.lexers import get_lexer_by_name
 from pygments.formatters.html import HtmlFormatter
 from pygments import highlight
+
+tutorial/urls.py 
+from django.views.generic import RedirectView
+
+snippets/permissions.py
+from rest_framework import permissions
+
+snippets/serializer.py
+from django.contrib.auth.models import User
+
+
 ```
 - Check out the Part_4 summary section
+There were modifications to the views (adding permissions), models(adding owner field and method), urls in both the tutorial project and snippets app, the addition of the permissions file.
 
+Now we should be able to use rest_framework (which is in the settings.py in the INSTALLED_APPS list), to have athentication and authorization based on the default authentication classes and permissions.
+
+You can do this many different ways, this is just the built in way
+- https://www.django-rest-framework.org/api-guide/authentication/
+
+I have seen knox work well for most that try and implement it
+- https://github.com/James1345/django-rest-knox
+
+#### DATABASE
+When we update our model, be sure to delete the db.sqlite3 file, re-run migration commands.
+```
+When that's all done we'll need to update our database tables. 
+Normally we'd create a database migration in order to do that, but for the purposes of this tutorial, let's just delete the database and start again.
+
+rm -f db.sqlite3
+rm -r snippets/migrations
+python manage.py makemigrations snippets
+python manage.py migrate
+You might also want to create a few different users, to use for testing the API. The quickest way to do this will be with the createsuperuser command.
+
+python manage.py createsuperuser
+```
 
 ### Summary
 #### Part_1 Serialization

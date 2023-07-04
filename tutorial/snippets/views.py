@@ -1,3 +1,6 @@
+# PART 4 OF TUTORIAL Authentication & Permissions
+# PART 4 OF TUTORIAL Authentication & Permissions
+# PART 4 OF TUTORIAL Authentication & Permissions
 from django.contrib.auth.models import User
 from snippets.serializers import UserSerializer
 from snippets.models import Snippet  
