@@ -354,6 +354,7 @@ http -a admin:password123 POST http://127.0.0.1:8000/snippets/ code="print(789)"
     "style": "friendly"
 }
 ```
+![alt text](./Images/Part-4/Screen%20Shot%202023-07-04%20at%205.35.58%20AM.png)
 - Summary
 
 We've now got a fairly fine-grained set of permissions on our Web API, and end points for users of the system and for the code snippets that they have created.
