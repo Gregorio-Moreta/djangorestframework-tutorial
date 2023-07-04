@@ -9,7 +9,7 @@ from snippets import views
 urlpatterns = [
     path('snippets/', views.SnippetList.as_view()),
     path('snippets/<int:pk>/', views.SnippetDetail.as_view()),
-    # Finally we need to add those views into the API, by referencing them from the URL conf. Add the following to the patterns in snippets/urls.py.
+    # Finally we need to add those user views into the API, by referencing them from the URL conf. Add the following to the patterns in snippets/urls.py.
     path('users/', views.UserList.as_view()),
     path('users/<int:pk>/', views.UserDetail.as_view()),
 ]

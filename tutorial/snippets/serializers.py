@@ -7,9 +7,15 @@ from snippets.models import Snippet, LANGUAGE_CHOICES, STYLE_CHOICES
 from django.contrib.auth.models import User
 
 class SnippetSerializer(serializers.ModelSerializer):
+    # Now that snippets are associated with the user that created them, let's update our SnippetSerializer to reflect that. Add the following field to the serializer definition in serializers.py:
+    owner = serializers.ReadOnlyField(source='owner.username')
     class Meta:
         model = Snippet
-        fields = ['id', 'title', 'code', 'linenos', 'language', 'style'] 
+        # Note: Make sure you also add 'owner', to the list of fields in the inner Meta class.
+        fields = ['owner', 'id', 'title', 'code', 'linenos', 'language', 'style'] 
+        # This field is doing something quite interesting. The source argument controls which attribute is used to populate a field, and can point at any attribute on the serialized instance. It can also take the dotted notation shown above, in which case it will traverse the given attributes, in a similar way as it is used with Django's template language.
+
+        # The field we've added is the untyped ReadOnlyField class, in contrast to the other typed fields, such as CharField, BooleanField etc... The untyped ReadOnlyField is always read-only, and will be used for serialized representations, but will not be used for updating model instances when they are deserialized. We could have also used CharField(read_only=True) here.
 
 class UserSerializer(serializers.ModelSerializer):
     snippets = serializers.PrimaryKeyRelatedField(many=True, queryset=Snippet.objects.all())

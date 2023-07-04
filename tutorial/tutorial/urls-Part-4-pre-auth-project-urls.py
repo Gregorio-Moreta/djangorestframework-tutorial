@@ -15,11 +15,8 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.urls import path, include
-from django.views.generic import RedirectView
 
-urlpatterns = []  # Define urlpatterns as an empty list
-
-urlpatterns += [
+urlpatterns = [
     # Include URLs from the 'snippets.urls' module
     # A single URL pattern defined by path(''). 
     # The include() function is used to include URLs from the snippets.urls module.
@@ -29,10 +26,4 @@ urlpatterns += [
     # This means that any URLs defined in the snippets.urls module will be included and accessible under the root URL.
 
     path('', include('snippets.urls')),  
-    path('api-auth/', include('rest_framework.urls')),
-    # Redirects the URL /accounts/profile/ to /snippets/. 
-    # By default djangorest framework will redirect to /accounts/profile/ after login.
-    # We want to redirect to /snippets/ instead, because now that the user is authenticated, they can access the API and hit the protected endpoints/ views.
-    path('accounts/profile/', RedirectView.as_view(url='/snippets')),
-
 ]
