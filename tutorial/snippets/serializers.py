@@ -1,48 +1,40 @@
-# PART 4 OF TUTORIAL Authentication & Permissions
-# PART 4 OF TUTORIAL Authentication & Permissions
-# PART 4 OF TUTORIAL Authentication & Permissions
+# PART_5 OF TUTORIAL Relationships and Hyperlinked APIs
+# PART_5 OF TUTORIAL Relationships and Hyperlinked APIs
+# PART_5 OF TUTORIAL Relationships and Hyperlinked APIs
 
+# Import the necessary modules
 from rest_framework import serializers
 from snippets.models import Snippet, LANGUAGE_CHOICES, STYLE_CHOICES
 from django.contrib.auth.models import User
 
-class SnippetSerializer(serializers.ModelSerializer):
-    # Now that snippets are associated with the user that created them, let's update our SnippetSerializer to reflect that. Add the following field to the serializer definition in serializers.py:
+# Define the SnippetSerializer class, which inherits from serializers.HyperlinkedModelSerializer
+class SnippetSerializer(serializers.HyperlinkedModelSerializer):
+    # Add a read-only field 'owner' that represents the username of the owner
     owner = serializers.ReadOnlyField(source='owner.username')
+    # Add a hyperlink field 'highlight' that represents the URL to the snippet highlight endpoint
+    highlight = serializers.HyperlinkedIdentityField(view_name='snippet-highlight', format='html')
+
+    # Define the Meta class to provide metadata for the serializer
     class Meta:
+        # Set the model to Snippet
         model = Snippet
-        # Note: Make sure you also add 'owner', to the list of fields in the inner Meta class.
-        fields = ['owner', 'id', 'title', 'code', 'linenos', 'language', 'style'] 
-        # This field is doing something quite interesting. The source argument controls which attribute is used to populate a field, and can point at any attribute on the serialized instance. It can also take the dotted notation shown above, in which case it will traverse the given attributes, in a similar way as it is used with Django's template language.
+        # Define the fields that should be serialized
+        fields = ['url', 'id', 'highlight', 'owner', 'title', 'code', 'linenos', 'language', 'style']
 
-        # The field we've added is the untyped ReadOnlyField class, in contrast to the other typed fields, such as CharField, BooleanField etc... The untyped ReadOnlyField is always read-only, and will be used for serialized representations, but will not be used for updating model instances when they are deserialized. We could have also used CharField(read_only=True) here.
 
-class UserSerializer(serializers.ModelSerializer):
-    snippets = serializers.PrimaryKeyRelatedField(many=True, queryset=Snippet.objects.all())
+# Define the UserSerializer class, which inherits from serializers.HyperlinkedModelSerializer
+class UserSerializer(serializers.HyperlinkedModelSerializer):
+    # Add a hyperlinked related field 'snippets' that represents the related snippets of a user
+    snippets = serializers.HyperlinkedRelatedField(many=True, view_name='snippet-detail', read_only=True)
 
+    # Define the Meta class to provide metadata for the serializer
     class Meta:
+        # Set the model to User
         model = User
-        fields = ['id', 'username', 'snippets']
-# Because 'snippets' is a reverse relationship on the User model, it will not be included by default when using the ModelSerializer class, so we needed to add an explicit field for it.
+        # Define the fields that should be serialized
+        fields = ['url', 'id', 'username', 'snippets']
 
-# We'll also add a couple of views to views.py. 
-# We'd like to just use read-only views for the user representations, so we'll use the ListAPIView and RetrieveAPIView generic class-based views.
+# Notice that we've also added a new 'highlight' field. This field is of the same type as the url field, except that it points to the 'snippet-highlight' url pattern, instead of the 'snippet-detail' url pattern.
 
+# Because we've included format suffixed URLs such as '.json', we also need to indicate on the highlight field that any format suffixed hyperlinks it returns should use the '.html' suffix.
 
-    def create(self, validated_data):
-        """
-        Create and return a new `Snippet` instance, given the validated data.
-        """
-        return Snippet.objects.create(**validated_data)
-
-    def update(self, instance, validated_data):
-        """
-        Update and return an existing `Snippet` instance, given the validated data.
-        """
-        instance.title = validated_data.get('title', instance.title)
-        instance.code = validated_data.get('code', instance.code)
-        instance.linenos = validated_data.get('linenos', instance.linenos)
-        instance.language = validated_data.get('language', instance.language)
-        instance.style = validated_data.get('style', instance.style)
-        instance.save()
-        return instance
