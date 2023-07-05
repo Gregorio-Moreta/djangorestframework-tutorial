@@ -2,7 +2,14 @@
 ## Build the official tutorial app
 
 ## QUICK INSTALL
-
+Look at these files
+```
+urls.py
+views.py
+models.py
+settings.py
+```
+You can ignore the other ones, they have extra steps from past work in the parts branches.
 
 Run this to clone down this repo
 `git clone`
@@ -41,8 +48,12 @@ You might also want to create a few different users, to use for testing the API.
 python manage.py createsuperuser
 ```
 
-Create users with the credentials user1 and user2
+## Creating users
+I created users two users with the credentials 
+- user1 
+- user2
 
+Both have the password `password`
 
 
 Our databases in tutorial/settings.py should look like this
