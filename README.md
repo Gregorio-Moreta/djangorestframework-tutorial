@@ -12,7 +12,7 @@ settings.py
 You can ignore the other ones, they have extra steps from past work in the parts branches.
 
 Run this to clone down this repo
-`git clone`
+`git clone https://github.com/Gregorio-Moreta/djangorestframework-tutorial/tree/example`
 
 Create your virtual environment
 `pipenv shell`
@@ -23,6 +23,8 @@ this should be everything you need but the second command is all the dependencie
 
 Or in case you delete your Pipfile
 `pipenv install django djangorestframework psycopg2-binary httpie`
+
+The psycopg2-binary is for SQL, we don't need it now, but you would if your made your database using SQL like we have in the past.
 
 You can skip a lot of the configuration stages because I have done it for you already essentially. You still need to set up your own psql database and users though.
 
@@ -55,6 +57,11 @@ I created users two users with the credentials
 
 Both have the password `password`
 
+Create your own users
+```
+python3 manage.py createsuperuser user3
+```
+Add in the password manually
 
 Our databases in tutorial/settings.py should look like this
 ```
