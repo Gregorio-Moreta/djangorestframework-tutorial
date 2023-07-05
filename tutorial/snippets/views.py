@@ -1,88 +1,76 @@
-# PART_5 OF TUTORIAL Relationships and Hyperlinked APIs
-# PART_5 OF TUTORIAL Relationships and Hyperlinked APIs
-# PART_5 OF TUTORIAL Relationships and Hyperlinked APIs
+# PART_6 Viewsets and Routers
+# PART_6 Viewsets and Routers
+# PART_6 Viewsets and Routers
+
+from rest_framework.decorators import action
+from rest_framework import viewsets
+
 # Import necessary modules
-from django.contrib.auth.models import User
 from snippets.serializers import UserSerializer
 from snippets.models import Snippet  
 from snippets.serializers import SnippetSerializer  
 from snippets.permissions import IsOwnerOrReadOnly
-from rest_framework import generics  
+from django.contrib.auth.models import User
 from rest_framework import permissions
-# Import the api_view decorator, which is used to create API views in Django REST Framework
-from rest_framework.decorators import api_view
-# Import the Response class, which is used to generate API responses
 from rest_framework.response import Response
-# Import the reverse function, which is used to generate URLs for named endpoints
-from rest_framework.reverse import reverse
-# Import the SnippetHighlight class, which is used to render the HTML representation of a Snippet object
 from rest_framework import renderers
 
-# Create a class called SnippetHighlight that inherits from generics.GenericAPIView
-class SnippetHighlight(generics.GenericAPIView):
+
+# Here we've used the ReadOnlyModelViewSet class to automatically provide the default 'read-only' operations. We're still setting the queryset and serializer_class attributes exactly as we did when we were using regular views, but we no longer need to provide the same information to two separate classes.
+
+# Define the UserViewSet class, which inherits from viewsets.ReadOnlyModelViewSet
+class UserViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    This viewset automatically provides `list` and `retrieve` actions.
+    """
+    # Set the queryset to retrieve all User objects
+    queryset = User.objects.all()
+    # Set the serializer class to be used for User objects
+    serializer_class = UserSerializer
+
+# The UserViewSet class is a subclass of viewsets.ReadOnlyModelViewSet, which provides default implementations for read-only actions (list and retrieve) on a model.
+
+# By setting the queryset attribute to User.objects.all(), all User objects in the database will be retrieved for this viewset.
+
+# The serializer_class attribute is set to UserSerializer, which specifies the serializer class to be used for serializing User objects.
+
+# Please note that the code assumes that you have imported the necessary modules (User, viewsets, etc.) and have defined the UserSerializer class. Additionally, make sure to include the UserViewSet in your URL configuration to make it accessible through the API.
+
+
+
+
+# This time we've used the ModelViewSet class in order to get the complete set of default read and write operations.
+
+# Notice that we've also used the @action decorator to create a custom action, named highlight. This decorator can be used to add any custom endpoints that don't fit into the standard create/update/delete style.
+
+# Custom actions which use the @action decorator will respond to GET requests by default. We can use the methods argument if we wanted an action that responded to POST requests.
+
+# The URLs for custom actions by default depend on the method name itself. If you want to change the way url should be constructed, you can include url_path as a decorator keyword argument.
+
+# Define the SnippetViewSet class, which inherits from viewsets.ModelViewSet
+class SnippetViewSet(viewsets.ModelViewSet):
+    """
+    This viewset automatically provides `list`, `create`, `retrieve`,
+    `update`, and `destroy` actions.
+
+    Additionally, we also provide an extra `highlight` action.
+    """
     # Set the queryset to retrieve all Snippet objects
     queryset = Snippet.objects.all()
-    # Use the StaticHTMLRenderer to render the HTML representation
-    renderer_classes = [renderers.StaticHTMLRenderer]
+    # Set the serializer class to be used for Snippet objects
+    serializer_class = SnippetSerializer
+    # Set the permission classes to control access permissions for Snippet views
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
 
-    # Define the get() method for handling GET requests
-    def get(self, request, *args, **kwargs):
+    # Define an additional action 'highlight' that responds to GET requests with a static HTML renderer
+    @action(detail=True, renderer_classes=[renderers.StaticHTMLRenderer])
+    def highlight(self, request, *args, **kwargs):
         # Retrieve the specific Snippet object
         snippet = self.get_object()
         # Return the highlighted code of the Snippet as the response
         return Response(snippet.highlighted)
 
-# Decorator that specifies that this view function only accepts GET requests
-@api_view(['GET'])
-def api_root(request, format=None):
-    # Create a dictionary named response_data to store the available endpoints.
-    # The keys of the dictionary represent the endpoint names,
-    # and the values are generated by calling the reverse function to obtain the URLs for the corresponding named endpoints.
-    response_data = {
-        'users': reverse('user-list', request=request, format=format),
-        'snippets': reverse('snippet-list', request=request, format=format)
-    }
-
-    # Return a Response object with the response_data dictionary as the data.
-    # This will be serialized into JSON and sent as the response.
-    return Response(response_data)
-
-# from rest_framework.decorators import api_view: Import the api_view decorator, which is used to create API views in Django REST Framework.
-
-# from rest_framework.response import Response: Import the Response class, which is used to generate API responses.
-
-# from rest_framework.reverse import reverse: Import the reverse function, which is used to generate URLs for named endpoints.
-
-# @api_view(['GET']): Decorator that specifies that this view function only accepts GET requests.
-
-# def api_root(request, format=None): Define the api_root function, which takes a request parameter and an optional format parameter.
-
-# response_data = {...}: Create a dictionary named response_data to store the available endpoints. The keys of the dictionary represent the endpoint names, and the values are generated by calling the reverse function to obtain the URLs for the corresponding named endpoints.
-
-# 'users': reverse('user-list', request=request, format=format): Use the reverse function to generate the URL for the 'user-list' endpoint. The request parameter is provided to include the request context, and the format parameter is used to specify the desired format of the URL.
-
-# 'snippets': reverse('snippet-list', request=request, format=format): Use the reverse function to generate the URL for the 'snippet-list' endpoint in a similar manner as above.
-
-# return Response(response_data): Return a Response object with the response_data dictionary as the data. This will be serialized into JSON and sent as the response.
-
-# The api_root function is intended to be used as the root endpoint of the API, providing a list of available endpoints. When a GET request is made to this endpoint, the function generates the URLs for the 'user-list' and 'snippet-list' endpoints using the reverse function and returns them as a JSON response.
-
-class UserList(generics.ListAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-
-class UserDetail(generics.RetrieveAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-
-class SnippetList(generics.ListCreateAPIView):
-    queryset = Snippet.objects.all()  
-    serializer_class = SnippetSerializer  
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    # Override the perform_create() method to associate the Snippet owner with the current user
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
 
-class SnippetDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Snippet.objects.all()  
-    serializer_class = SnippetSerializer  
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
