@@ -20,7 +20,7 @@ Options include:
 python3 -m venv env
 source env/bin/activate
 ```
-#### pipenv
+#### pipenv ( I am using this one, checkout the Pipfile in the root of this repo )
 - https://pipenv-fork.readthedocs.io/en/latest/basics.html
 - https://formulae.brew.sh/formula/pipenv
 - https://medium.com/geekculture/setting-up-python-environment-in-macos-using-pyenv-and-pipenv-116293da8e72
