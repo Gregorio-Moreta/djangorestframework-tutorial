@@ -12,7 +12,7 @@ You can use any environment you prefer so long as you know how to use them prope
 For some of you, pip may cause problems, you can use homebrew to install these if you need to as well.
 Options include:
 - venv ( this is what the tutorial uses )
-- pipenv
+- pipenv ( this is what I am using )
 - mkvirtualenv ( we used this one in class )
 
 #### venv
