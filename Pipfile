@@ -9,6 +9,7 @@ djangorestframework = "*"
 pygments = "*"
 httpie = "*"
 gunicorn = "*"
+django-environ = "*"
 
 [dev-packages]
 
