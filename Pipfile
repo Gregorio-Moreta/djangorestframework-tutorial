@@ -10,6 +10,7 @@ pygments = "*"
 httpie = "*"
 gunicorn = "*"
 django-environ = "*"
+psycopg2-binary = "*"
 
 [dev-packages]
 
