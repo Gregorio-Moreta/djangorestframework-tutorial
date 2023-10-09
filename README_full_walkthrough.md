@@ -228,8 +228,8 @@ Covered these topics in the snippets/views.py and snippets/urls.py
 Checkout the docs for further details about how these features work and refer to the screenshots below.
 Note that I also included comments explaining much of this in the files on this branch and commit so check those out.
 
-![alt text](/tutorial/Images/Part-2/Screen%20Shot%202023-07-02%20at%208.21.33%20PM.png)
-![alt text](/tutorial/Images/Part-2/Screen%20Shot%202023-07-02%20at%208.23.01%20PM.png)
+![alt text](/images/Part-2/Screen%20Shot%202023-07-02%20at%208.21.33%20PM.png)
+![alt text](/images/Part-2/Screen%20Shot%202023-07-02%20at%208.23.01%20PM.png)
 
 #### Part_3 Class Based Views
 I made new views files for this part_3 so there is one for rewriting our API using 
@@ -383,11 +383,11 @@ from snippets.permissions import IsOwnerOrReadOnly
 Now, if you open a browser again, you find that the 'DELETE' and 'PUT' actions only appear on a snippet instance endpoint if you're logged in as the same user that created the code snippet.
 
 ```
-![alt text](/tutorial/Images/Part-4/Screen%20Shot%202023-07-04%20at%205.12.31%20AM.png)
+![alt text](/Images/Part-4/Screen%20Shot%202023-07-04%20at%205.12.31%20AM.png)
 
 Notice that I am signed in as user1 and now have access to the PUT and DELETE buttons/ options which is authorized through the permissions.py file.
 
-![alt text](/tutorial/Images/Part-4/Screen%20Shot%202023-07-04%20at%205.15.06%20AM.png)
+![alt text](/Images/Part-4/Screen%20Shot%202023-07-04%20at%205.15.06%20AM.png)
 
 This is the view when you are signed in as user1 but view another user's Snippets. The option to DELETE or PUT is now unavailable because the Snippet belongs to anoher user.
 - Authenticating with the API
@@ -419,7 +419,7 @@ http -a admin:password123 POST http://127.0.0.1:8000/snippets/ code="print(789)"
     "style": "friendly"
 }
 ```
-![alt text](/tutorial/Images/Part-4/Screen%20Shot%202023-07-04%20at%205.35.58%20AM.png)
+![alt text](/Images/Part-4/Screen%20Shot%202023-07-04%20at%205.35.58%20AM.png)
 - Summary
 
 We've now got a fairly fine-grained set of permissions on our Web API, and end points for users of the system and for the code snippets that they have created.
@@ -572,11 +572,11 @@ In part 6 of the tutorial we'll look at how we can use ViewSets and Routers to r
 ```
 You should be able to sign in and view the API like this. 
 
-![alt text](/tutorial/Images/Part-5/Screen%20Shot%202023-07-04%20at%206.30.36%20PM.png)
-![alt text](/tutorial/Images/Part-5/Screen%20Shot%202023-07-04%20at%206.30.45%20PM.png)
-![alt text](/tutorial/Images/Part-5/Screen%20Shot%202023-07-04%20at%206.30.55%20PM.png)
-![alt text](/tutorial/Images/Part-5/Screen%20Shot%202023-07-04%20at%206.31.06%20PM.png)
-![alt text](/tutorial/Images/Part-5/Screen%20Shot%202023-07-04%20at%206.31.14%20PM.png)
+![alt text](/Images/Part-5/Screen%20Shot%202023-07-04%20at%206.30.36%20PM.png)
+![alt text](/Images/Part-5/Screen%20Shot%202023-07-04%20at%206.30.45%20PM.png)
+![alt text](/Images/Part-5/Screen%20Shot%202023-07-04%20at%206.30.55%20PM.png)
+![alt text](/Images/Part-5/Screen%20Shot%202023-07-04%20at%206.31.06%20PM.png)
+![alt text](/Images/Part-5/Screen%20Shot%202023-07-04%20at%206.31.14%20PM.png)
 
 
 
