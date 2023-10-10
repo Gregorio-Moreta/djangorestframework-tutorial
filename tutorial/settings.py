@@ -14,10 +14,14 @@ from pathlib import Path, os
 import dj_database_url
 import django_heroku
 
-import environ  
-# Initialise environment variables
+import environ
+
+# Define the env variable to read environment variables
 env = environ.Env()
+
+# Read environment variables from a .env file
 environ.Env.read_env()
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
